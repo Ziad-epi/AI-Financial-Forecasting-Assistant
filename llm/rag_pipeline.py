@@ -5,9 +5,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Tuple
 
-from embedding import EmbeddingConfig, EmbeddingModel
-from generator import build_generator
-from retriever import Retriever, VectorStore, VectorStoreConfig
+from .embedding import EmbeddingConfig, EmbeddingModel
+from .generator import build_generator
+from .retriever import Retriever, VectorStore, VectorStoreConfig
 
 
 @dataclass
