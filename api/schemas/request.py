@@ -16,5 +16,9 @@ class PredictionRequest(BaseModel):
     features: Features
 
 
+class DecisionRequest(BaseModel):
+    features: Features
+
+
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, description="User question")

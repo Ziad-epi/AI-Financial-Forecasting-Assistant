@@ -9,6 +9,13 @@ class PredictionResponse(BaseModel):
     prediction: float = Field(..., description="Forecasted value")
 
 
+class DecisionResponse(BaseModel):
+    prediction: float = Field(..., description="Forecasted value")
+    signal: str = Field(..., description="Trading signal: BUY, SELL, or HOLD")
+    risk: str = Field(..., description="Risk level: LOW, MEDIUM, or HIGH")
+    explanation: str = Field(..., description="Business explanation for the decision")
+
+
 class AskResponse(BaseModel):
     answer: str = Field(..., description="LLM answer")
 

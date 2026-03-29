@@ -5,13 +5,13 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
 
-from api.schemas.request import PredictionRequest
-from api.schemas.response import ErrorResponse, PredictionResponse
+from api.schemas.request import DecisionRequest
+from api.schemas.response import DecisionResponse, ErrorResponse
 from api.services import model_service
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(tags=["predict"])
+router = APIRouter(tags=["decision"])
 
 
 def _to_dict(model: Any) -> dict:
@@ -21,18 +21,18 @@ def _to_dict(model: Any) -> dict:
 
 
 @router.post(
-    "/predict",
-    response_model=PredictionResponse,
+    "/decision",
+    response_model=DecisionResponse,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ErrorResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ErrorResponse},
     },
 )
-def predict(payload: PredictionRequest) -> PredictionResponse:
+def decision(payload: DecisionRequest) -> DecisionResponse:
     features = _to_dict(payload.features)
-    logger.info("Predict request: %s", features)
+    logger.info("Decision request: %s", features)
     try:
-        prediction = model_service.predict(features)
+        result = model_service.decision(features)
     except (KeyError, ValueError) as exc:
         logger.warning("Invalid features: %s", exc)
         raise HTTPException(
@@ -40,11 +40,10 @@ def predict(payload: PredictionRequest) -> PredictionResponse:
             detail=str(exc),
         ) from exc
     except Exception as exc:
-        logger.exception("Prediction failed")
+        logger.exception("Decision failed")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Prediction failed: {exc}",
+            detail=f"Decision failed: {exc}",
         ) from exc
 
-    logger.info("Predict response: %s", prediction)
-    return PredictionResponse(prediction=prediction)
+    return DecisionResponse(**result)

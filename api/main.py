@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from api.routes.ask import router as ask_router
+from api.routes.decision import router as decision_router
 from api.routes.predict import router as predict_router
 from api.schemas.response import ErrorResponse, HealthResponse, ModelInfoResponse
 from api.services import model_service, rag_service
@@ -48,6 +49,7 @@ def model_info() -> ModelInfoResponse:
 
 
 app.include_router(predict_router)
+app.include_router(decision_router)
 app.include_router(ask_router)
 
 
