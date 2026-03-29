@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.git/
+.jupyter_runtime/
+.pytest_cache/
+.venv/
+.env
+notebooks/
+*.ipynb
+data/raw/
